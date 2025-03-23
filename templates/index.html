@@ -1,0 +1,194 @@
+{% extends "layout.html" %}
+{% import '_macros.html' as macros %}
+
+{% block container %}
+<div class="container">
+  <div class="d-flex justify-content-end mb-3">
+    <a href="{{ url_for('logout') }}" class="btn btn-danger">Cerrar Sesión</a>
+  </div>
+  <!-- Pedido de Pizzas -->
+  <div class="bg-white p-4 rounded-3 shadow-lg mb-5">
+    <h2 class="h3 mb-4 fw-bold text-primary">Pedido de Pizzas</h2>
+    <form method="POST" novalidate>
+      {{ pizza_form.csrf_token }}
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      
+      <!-- Datos del cliente -->
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-md-6 col-lg-3">
+          {{ macros.camposNuevos(pizza_form.nombre) }}
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          {{ macros.camposNuevos(pizza_form.direccion) }}
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          {{ macros.camposNuevos(pizza_form.telefono) }}
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          {{ macros.camposNuevos(pizza_form.fecha) }}
+        </div>
+      </div>
+
+      <!-- Datos de la pizza -->
+      <div class="row g-4 align-items-center mb-4">
+        <div class="col-12 col-lg-4">
+          <div class="border p-3 rounded-3">
+            <label class="form-label fw-bold mb-3">Tamaño</label>
+            <div class="d-flex flex-column gap-2">
+              <div class="form-check">
+                <input type="radio" name="tamano" value="Chica" required class="form-check-input">
+                <label class="form-check-label">Chica ($40)</label>
+              </div>
+              <div class="form-check">
+                <input type="radio" name="tamano" value="Mediana" class="form-check-input">
+                <label class="form-check-label">Mediana ($80)</label>
+              </div>
+              <div class="form-check">
+                <input type="radio" name="tamano" value="Grande" class="form-check-input">
+                <label class="form-check-label">Grande ($120)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-3">
+          <div class="border p-3 rounded-3">
+            <label class="form-label fw-bold mb-3">Ingredientes</label>
+            <div class="d-flex flex-column gap-2">
+              <div class="form-check">
+                {{ pizza_form.jamon(class="form-check-input") }}
+                <label class="form-check-label">Jamón</label>
+              </div>
+              <div class="form-check">
+                {{ pizza_form.pina(class="form-check-input") }}
+                <label class="form-check-label">Piña</label>
+              </div>
+              <div class="form-check">
+                {{ pizza_form.champi(class="form-check-input") }}
+                <label class="form-check-label">Champiñones</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-3">
+          <div class="border p-3 rounded-3">
+            {{ macros.camposNuevos(pizza_form.numero_pizzas) }}
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-2">
+          <div class="d-grid gap-2">
+            {{ pizza_form.btn_agregar(class="btn btn-primary bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600") }}
+            {{ pizza_form.btn_quitar(class="btn btn-danger bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600") }}
+            {{ pizza_form.btn_terminar(class="btn btn-success bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600") }}
+            
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Tabla de detalle de pizzas -->
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>Tamaño</th>
+            <th>Ingredientes</th>
+            <th class="text-center">No. Pizzas</th>
+            <th class="text-end">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in pizzas %}
+          <tr>
+            <td>{{ p.tamano }}</td>
+            <td>{{ p.ingredientes }}</td>
+            <td class="text-center">{{ p.numero }}</td>
+            <td class="text-end">${{ p.subtotal }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="total-section text-end">
+      <h5 class="mb-0 fw-bold">Total parcial: ${{ subtotal_general }}</h5>
+    </div>
+  </div>
+
+<!--  Consulta de Ventas -->
+<div class="bg-white p-4 rounded-3 shadow-lg">
+    <h2 class="h3 mb-4 fw-bold text-primary">Consulta de Ventas</h2>
+    <form method="POST" novalidate>
+        {{ ventas_form.csrf_token }}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <div class="row g-3 align-items-end mb-4">
+            <div class="col-12 col-md-4">
+                <label class="form-label fw-bold d-block">Tipo de Búsqueda</label>
+                <div class="d-flex flex-column gap-2">
+                    <div class="form-check">
+                        <input type="radio" name="tipo_busqueda" id="tipo-dia" 
+                               value="dia" class="form-check-input"
+                               {% if ventas_form.tipo_busqueda.data == 'dia' %}checked{% endif %}>
+                        <label class="form-check-label" for="tipo-dia">Día</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="tipo_busqueda" id="tipo-mes" 
+                               value="mes" class="form-check-input"
+                               {% if ventas_form.tipo_busqueda.data == 'mes' %}checked{% endif %}>
+                        <label class="form-check-label" for="tipo-mes">Mes</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-12 col-md-4">
+                {{ ventas_form.fecha_busqueda.label(class="form-label fw-bold") }}
+                {{ ventas_form.fecha_busqueda(class="form-control") }}
+            </div>
+            
+            <div class="col-12 col-md-4">
+                {{ ventas_form.btn_buscar(class="btn btn-primary w-100") }}
+            </div>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Cliente</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Fecha</th>
+                    <th class="text-end">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in ventas %}
+                <tr>
+                    <td>{{ v.nombre }}</td>
+                    <td>{{ v.direccion }}</td>
+                    <td>{{ v.telefono }}</td>
+                    <td>{{ v.fecha_pedido }}</td>
+                    <td class="text-end">${{ v.total }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="total-section">
+        <h5 class="fw-bold mb-0">
+            {% if ventas_form.tipo_busqueda.data == 'dia' %}
+            Total del día: 
+            {% elif ventas_form.tipo_busqueda.data == 'mes' %}
+            Total del mes: 
+            {% else %}
+            Total: 
+            {% endif %}
+            ${{ total_dia_mes }}
+        </h5>
+    </div>
+</div>
+</div>
+{% endblock %}
