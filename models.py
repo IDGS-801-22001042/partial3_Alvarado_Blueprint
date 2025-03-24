@@ -22,3 +22,19 @@ class Usuario(db.Model, UserMixin):
     
     def get_id(self):
         return str(self.idUsuario)
+
+class Cliente(db.Model):
+    __tablename__ = 'cliente'
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(150), nullable=False)
+    telefono = db.Column(db.String(50), nullable=False)
+    direccion = db.Column(db.String(200), nullable=False)
+    activo = db.Column(db.Boolean, default=True)
+
+class Proveedor(db.Model):
+    __tablename__ = 'proveedor'
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(150), nullable=False)
+    telefono = db.Column(db.String(50), nullable=False)
+    empresa = db.Column(db.String(200), nullable=False)
+    activo = db.Column(db.Boolean, default=True)

@@ -38,3 +38,20 @@ class ConsultaVentasForm(Form):
         validators.DataRequired(message='Selecciona una fecha')
     ])
     btn_buscar = SubmitField("Buscar")
+
+
+class ClienteForm(Form):
+    nombre = StringField("Nombre", [validators.DataRequired(message='Campo requerido'),
+                                    validators.Length(min=4, max=150)])
+    telefono = StringField("Teléfono", [validators.DataRequired(message='Campo requerido'),
+                                        validators.Length(min=8, max=50)])
+    direccion = StringField("Dirección", [validators.DataRequired(message='Campo requerido')])
+    btn_guardar = SubmitField("Guardar")
+
+class ProveedorForm(Form):
+    nombre = StringField("Nombre", [validators.DataRequired(message='Campo requerido'),
+                                    validators.Length(min=4, max=150)])
+    telefono = StringField("Teléfono", [validators.DataRequired(message='Campo requerido'),
+                                        validators.Length(min=8, max=50)])
+    empresa = StringField("Empresa", [validators.DataRequired(message='Campo requerido')])
+    btn_guardar = SubmitField("Guardar")

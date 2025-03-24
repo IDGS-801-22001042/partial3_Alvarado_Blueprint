@@ -19,6 +19,19 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+@login_manager.user_loader
+def load_user(user_id):
+    return Usuario.query.get(int(user_id))
+
+# Registrar Blueprints
+from blueprints.auth import auth_bp
+from blueprints.clientes import clientes_bp
+from blueprints.proveedores import proveedores_bp
+
+app.register_blueprint(auth_bp, url_prefix='/login')
+app.register_blueprint(clientes_bp, url_prefix='/clientes')
+app.register_blueprint(proveedores_bp, url_prefix='/proveedores')
+
 @login_manager.user_loader#Función de carga del usuario
 def load_user(user_id):
     return Usuario.query.get(int(user_id))
