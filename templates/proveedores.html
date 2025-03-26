@@ -1,14 +1,11 @@
-
 {% extends "layout2.html" %}
 {% block container %}
 <div class="container mx-auto p-4">
-    <div class="container">
-        <div class="d-flex justify-content-end mb-3">
-          <a href="{{ url_for('logout') }}" class="btn btn-danger">Cerrar Sesión</a>
-        </div>
+    <div class="d-flex justify-content-end mb-3">
+      <a href="{{ url_for('logout') }}" class="btn btn-danger">Cerrar Sesión</a>
+    </div>
   <h2 class="text-2xl font-bold mb-4">Gestión de Proveedores</h2>
   <nav class="mb-4">
-    
     {% if editar %} | <span class="text-gray-600">Editando Proveedor #{{ proveedor.id }}</span>{% endif %}
   </nav>
   <form method="POST" action="{{ url_for('proveedores.index') }}" class="mb-4">
@@ -26,6 +23,16 @@
       {{ form.empresa.label(class='block text-gray-700') }}
       {{ form.empresa(class='mt-1 block w-full border-gray-300 rounded-md') }}
     </div>
+    {% if not editar %} 
+    <div class="mb-3">
+      {{ form.username.label(class='block text-gray-700') }}
+      {{ form.username(class='mt-1 block w-full border-gray-300 rounded-md') }}
+    </div>
+    <div class="mb-3">
+      {{ form.password.label(class='block text-gray-700') }}
+      {{ form.password(class='mt-1 block w-full border-gray-300 rounded-md') }}
+    </div>
+    {% endif %}
     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Guardar</button>
   </form>
   <h3 class="text-xl font-semibold mb-2">Listado de Proveedores</h3>

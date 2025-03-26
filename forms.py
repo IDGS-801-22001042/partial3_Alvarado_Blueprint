@@ -54,4 +54,17 @@ class ProveedorForm(Form):
     telefono = StringField("Teléfono", [validators.DataRequired(message='Campo requerido'),
                                         validators.Length(min=8, max=50)])
     empresa = StringField("Empresa", [validators.DataRequired(message='Campo requerido')])
+    username = StringField("Usuario", [validators.DataRequired(message='Campo requerido'),
+                                        validators.Length(min=4, max=80)])
+    password = StringField("Contraseña", [validators.DataRequired(message='Campo requerido')])
     btn_guardar = SubmitField("Guardar")
+
+class RegistrationForm(Form):
+    username = StringField("Usuario", [
+        validators.DataRequired(message='Campo requerido'),
+        validators.Length(min=4, max=80)
+    ])
+    password = StringField("Contraseña", [
+        validators.DataRequired(message='Campo requerido')
+    ])
+    btn_register = SubmitField("Registrar")

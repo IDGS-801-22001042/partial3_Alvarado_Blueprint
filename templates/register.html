@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block container %}
+<div class="min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <h2 class="text-2xl font-bold text-center mb-6">Registro de Usuario</h2>
+    <form method="POST" action="{{ url_for('auth.register') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      <div class="mb-4">
+        {{ form.username.label(class="block text-gray-700") }}
+        {{ form.username(class="mt-1 block w-full border-gray-300 rounded-md") }}
+      </div>
+      <div class="mb-4">
+        {{ form.password.label(class="block text-gray-700") }}
+        {{ form.password(class="mt-1 block w-full border-gray-300 rounded-md") }}
+      </div>
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Registrar</button>
+    </form>
+    <p class="mt-4 text-center">¿Ya tienes una cuenta? <a href="{{ url_for('login') }}" class="text-blue-500 hover:underline">Inicia sesión</a></p>
+  </div>
+</div>
+{% endblock %}

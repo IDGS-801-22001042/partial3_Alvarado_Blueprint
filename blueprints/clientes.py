@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask_login import login_required
 from models import db, Cliente
 from forms import ClienteForm
 
 clientes_bp = Blueprint('clientes', __name__, template_folder='../templates')
 
 @clientes_bp.route('/', methods=['GET', 'POST'])
+@login_required
 def index():
     form = ClienteForm(request.form)
     if request.method == 'POST' and form.validate():

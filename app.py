@@ -39,9 +39,9 @@ def load_user(user_id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']  # Cambiado de 'usuario' a 'username'
-        password = request.form['password']  # Se puede mantener 'password'
-        user = Usuario.query.filter_by(usuario=username).first()  # Se filtra por el campo 'usuario' del modelo
+        username = request.form['username'] 
+        password = request.form['password'] 
+        user = Usuario.query.filter_by(usuario=username).first() 
         if user and user.contrasenia == password:
             login_user(user)
             flash('Inicio de sesión exitoso', 'success')
